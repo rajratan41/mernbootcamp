@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("node:crypto");
+const { v4: uuidv4 } = require("uuid");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -23,7 +24,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  //   Todo: Come Back here
   encry_password: {
     type: String,
     required: true,
@@ -39,7 +39,22 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema
+  .virtual("password")
+  .set(function (password) {
+    this._password = password;
+    this.salt = uuidv4();
+    this.encry_password = this.securePassword(password);
+  })
+  .get(function () {
+    return this._password;
+  });
+
 userSchema.method = {
+  authenticate: function (plainpassword) {
+    return this.securePassword(plainpassword) === this.encry_password;
+  },
+
   securePassword: function (plainpassword) {
     if (!password) return "";
     try {
