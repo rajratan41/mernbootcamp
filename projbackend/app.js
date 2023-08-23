@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const authRoutes = require("./routes/auth");
+
 // db Connection
 const connectToDB = () => {
   try {
@@ -28,13 +30,15 @@ const connectToDB = () => {
     console.log(error);
   }
 };
-
 connectToDB();
 
 // Middlewares
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
+
+// My Routes
+app.use("/api/v1", authRoutes);
 
 // Port
 const port = process.env.PORT || 8000;
