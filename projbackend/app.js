@@ -3,6 +3,9 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // db Connection
 const connectToDB = () => {
@@ -28,8 +31,15 @@ const connectToDB = () => {
 
 connectToDB();
 
+// Middlewares
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
+
+// Port
 const port = process.env.PORT || 8000;
 
+// Starting a server
 app.listen(port, () => {
   console.log(`App is running at ${port}`);
 });
