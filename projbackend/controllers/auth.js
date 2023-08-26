@@ -73,7 +73,7 @@ exports.signout = (req, res) => {
   });
 };
 
-// protected routes
+// protected routes - Middleware
 exports.isSignedIn = expressjwt({
   secret: process.env.SECRET,
   userProperty: "auth",
