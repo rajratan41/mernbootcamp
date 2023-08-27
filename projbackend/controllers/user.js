@@ -67,3 +67,34 @@ exports.userPurchaseList = async (req, res) => {
     });
   }
 };
+
+exports.pushOrderInPurchaseList = async (req, res, next) => {
+  let purchases = [];
+  req.body.order.products.forEach((product) => {
+    purchases.push({
+      _id: product._id,
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      quantity: product.quantity,
+      amount: req.body.order.amount,
+      transaction_id: req.body.order.transaction_id,
+    });
+  });
+
+  //   store this in DB
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.profile._id },
+      { $push: { purchases: purchases } },
+      { new: true }
+    );
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Unable to save purchase list",
+      error: error.message,
+    });
+    next();
+  }
+};
