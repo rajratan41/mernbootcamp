@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Order = require("../models/order");
 
 // Get id of User from Params
 exports.getUserById = (req, res, next, id) => {
@@ -42,6 +43,26 @@ exports.updateUser = async (req, res) => {
     res.status(400).json({
       success: false,
       message: "You are not authorized to Update this User",
+      error: error.message,
+    });
+  }
+};
+
+exports.userPurchaseList = async (req, res) => {
+  try {
+    const order = await Order.find({ user: req.profile._id }).populate(
+      "user",
+      "_id name"
+    );
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "No Order in this account",
       error: error.message,
     });
   }
