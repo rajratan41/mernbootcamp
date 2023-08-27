@@ -17,8 +17,32 @@ exports.getUserById = (req, res, next, id) => {
 };
 
 exports.getUser = (req, res) => {
-  // TODO: get back here for password
   req.profile.salt = undefined;
   req.profile.encry_password = undefined;
   return res.json(req.profile);
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      { _id: req.profile._id },
+      { $set: req.body },
+      { new: true, useFindAndModify: false }
+    );
+
+    user.salt = undefined;
+    user.encry_password = undefined;
+
+    res.status(201).json({
+      success: true,
+      message: "User Updated Successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "You are not authorized to Update this User",
+      error: error.message,
+    });
+  }
 };
