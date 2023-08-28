@@ -10,6 +10,7 @@ const cors = require("cors");
 // My Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const categoryRoutes = require("./routes/category");
 
 // db Connection
 const connectToDB = () => {
@@ -42,6 +43,7 @@ app.use(cors());
 // My Routes
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", categoryRoutes);
 
 // Port
 const port = process.env.PORT || 8000;
