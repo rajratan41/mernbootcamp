@@ -20,9 +20,9 @@ exports.getCategoryById = async (req, res, next, id) => {
 
 exports.createCategory = async (req, res) => {
   try {
-    const newcategory = await new Category(req.body).save();
+    const createCategory = await new Category(req.body).save();
 
-    res.status(200).json({ newcategory });
+    res.status(200).json({ createCategory });
   } catch (error) {
     res.status(400).json({
       message: "Not able to save category in DB",
