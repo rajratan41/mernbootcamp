@@ -20,7 +20,7 @@ exports.getCategoryById = async (req, res, next, id) => {
 
 exports.createCategory = async (req, res) => {
   try {
-    const newcategory = new Category(req.body).save();
+    const newcategory = await new Category(req.body).save();
 
     res.status(200).json({ newcategory });
   } catch (error) {
