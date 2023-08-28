@@ -11,8 +11,21 @@ exports.getCategoryById = async (req, res, next, id) => {
 
     next();
   } catch (error) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "Category not found in DB",
+      error: error.message,
+    });
+  }
+};
+
+exports.createCategory = async (req, res) => {
+  try {
+    const newcategory = new Category(req.body).save();
+
+    res.status(200).json({ newcategory });
+  } catch (error) {
+    res.status(400).json({
+      message: "Not able to save category in DB",
       error: error.message,
     });
   }
