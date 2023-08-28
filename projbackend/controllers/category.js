@@ -50,3 +50,22 @@ exports.getAllCategory = async (req, res) => {
     });
   }
 };
+
+exports.updateCategory = async (req, res) => {
+  try {
+    const updateCategory = await req.category;
+    updateCategory.name = req.body.name;
+
+    updateCategory.save();
+
+    res.status(200).json({
+      message: "Category is Updated",
+      updateCategory,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to update category",
+      error: error.message,
+    });
+  }
+};
