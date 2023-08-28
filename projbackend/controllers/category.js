@@ -30,3 +30,23 @@ exports.createCategory = async (req, res) => {
     });
   }
 };
+
+exports.getCategory = (req, res) => {
+  return res.status(200).json(req.category);
+};
+
+exports.getAllCategory = async (req, res) => {
+  try {
+    const getAllCategory = await Category.find();
+
+    res.json({
+      message: "success",
+      getAllCategory,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "No Categories Found",
+      error: error.message,
+    });
+  }
+};
