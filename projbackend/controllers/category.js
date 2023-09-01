@@ -4,10 +4,7 @@ exports.getCategoryById = async (req, res, next, id) => {
   try {
     const category = await Category.findById(id);
 
-    res.status(200).json({
-      message: "Success",
-      category,
-    });
+    req.category = category;
 
     next();
   } catch (error) {
@@ -65,6 +62,25 @@ exports.updateCategory = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Failed to update category",
+      error: error.message,
+    });
+  }
+};
+
+// TODO: Delete is not working
+exports.removeCategory = async (req, res) => {
+  try {
+    const id = req.params;
+    const category = await Category.findById(id);
+
+    category.remove();
+
+    res.json({
+      message: "category is successfully deleted",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to delete this category",
       error: error.message,
     });
   }
